@@ -4,7 +4,7 @@
     Plugin URI: http://www.tobiasroessler.com
     Description: Plugin for managing recipes
     Author: Tobias Rössler
-    Version: 1.0
+    Version: 1.0.0
     Author URI: http://www.tobiasroessler.com
 */
 
