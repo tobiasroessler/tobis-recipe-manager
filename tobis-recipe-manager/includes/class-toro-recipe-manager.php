@@ -1,6 +1,11 @@
 <?php
 
-class TORO_Recipe_Manager {
+require('installation_and_update/class-toro-recipe-manager-installer.php');
+
+global $toro_rm_db_version;
+$toro_rm_db_version = '1.0.0';
+
+class ToRo_Recipe_Manager {
     
     const RECIPE_POST_TYPE_ID = "tobis_recipes";
     const RECIPE_POST_TYPE_NAME = "Recipes";
@@ -14,7 +19,6 @@ class TORO_Recipe_Manager {
     const RECIPE_POST_TYPE_MENU_POSITION = 8;
     const RECIPES_NOT_FOUND = "No recipes found";
     const RECIPES_NOT_FOUND_IN_TRASH = "No recipes found in trash";
-    
     const INGREDIENTS_PARENT_SLUG = "edit.php?post_type=tobis_recipes";
     const INGREDIENTS_PAGE_TITLE = "Ingredients";
     const INGREDIENTS_MENU_TITLE = "Ingredients";
@@ -32,6 +36,10 @@ class TORO_Recipe_Manager {
         
         // Add a submenu for managing the ingredients
         add_action('admin_menu', array($this, 'add_submenu_for_ingredients'));
+        
+        // Initialize database
+        $installer = new ToRo_Recipe_Manager_Installer();
+        $installer->install();
     }
   
     function register_plugin() {
