@@ -26,8 +26,15 @@ class ToRo_Recipe_Manager {
     const INGREDIENTS_MENU_SLUG = "tobis_recipes_ingredients";
     const INGREDIENTS_FUNCTION = "my_render_list_page";
     
+    public $installer = null;
+    
     function __construct() {
-        // Do nothing
+        $this->installer = new ToRo_Recipe_Manager_Installer();
+    }
+    
+    public function install() {
+        // Install the plugin
+        $this->installer->install();
     }
     
     function init() {
@@ -37,9 +44,8 @@ class ToRo_Recipe_Manager {
         // Add a submenu for managing the ingredients
         add_action('admin_menu', array($this, 'add_submenu_for_ingredients'));
         
-        // Initialize database
-        $installer = new ToRo_Recipe_Manager_Installer();
-        $installer->install();
+        // Register plugins_loaded hock for updating the plugin
+        add_action('plugins_loaded', array($this->installer, 'update'));
     }
   
     function register_plugin() {

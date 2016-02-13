@@ -12,7 +12,11 @@ error_reporting(E_STRICT);
 
 require('includes/class-toro-recipe-manager.php');
 
+// Create recipe manager instance and initialize the plugin
 $plugin = new ToRo_Recipe_Manager();
 $plugin->init();
+
+// This must be in the main plugin file
+register_activation_hook(__FILE__, array($plugin, 'install'));
 
 ?>
