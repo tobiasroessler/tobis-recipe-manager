@@ -1,6 +1,14 @@
 <?php
 
-require('installation_and_update/class-toro-recipe-manager-installer.php');
+if(!class_exists('WP_List_Table')) {
+    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+}
+
+require_once('installation_and_update/class-toro-recipe-manager-installer.php');
+require_once('list_tables/class-toro-rm-ingredients-list-table.php');
+require_once('meta_boxes/class-toro-rm-recipe-details-meta-box.php');
+require_once('meta_boxes/class-toro-rm-ingredients-meta-box.php');
+require_once('meta_boxes/class-toro-rm-steps-meta-box.php');
 
 global $toro_rm_db_version;
 $toro_rm_db_version = '1.0.0';
@@ -24,12 +32,18 @@ class ToRo_Recipe_Manager {
     const INGREDIENTS_MENU_TITLE = "Ingredients";
     const INGREDIENTS_CAPABILITY = "activate_plugins";
     const INGREDIENTS_MENU_SLUG = "tobis_recipes_ingredients";
-    const INGREDIENTS_FUNCTION = "my_render_list_page";
+    const INGREDIENTS_FUNCTION = "render_ingredients_list_table";
     
     public $installer = null;
+    public $recipe_details_meta_box = null;
+    public $ingredients_meta_box = null;
+    public $steps_meta_box = null;
     
     function __construct() {
         $this->installer = new ToRo_Recipe_Manager_Installer();
+        $this->recipe_details_meta_box = new ToRo_RM_Recipe_Details_Meta_Box(self::RECIPE_POST_TYPE_ID);
+        $this->ingredients_meta_box = new ToRo_RM_Ingredients_Meta_Box(self::RECIPE_POST_TYPE_ID);
+        $this->steps_meta_box = new ToRo_RM_Steps_Meta_Box(self::RECIPE_POST_TYPE_ID);
     }
     
     public function install() {
@@ -39,17 +53,35 @@ class ToRo_Recipe_Manager {
     
     function init() {
         // Register the plugin
-        add_action('init', array($this, 'register_plugin'), 0);
+        add_action('init', array($this, 'init_plugin'), 0);
+        
+        // Insert style scripts
+        //add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
+        add_action('init', array($this, 'enqueue_styles'));
         
         // Add a submenu for managing the ingredients
         add_action('admin_menu', array($this, 'add_submenu_for_ingredients'));
         
         // Register plugins_loaded hock for updating the plugin
         add_action('plugins_loaded', array($this->installer, 'update'));
+        
+        // Register add_meta_boxes hock for adding metaboxs
+        $this->recipe_details_meta_box->init();
+        $this->ingredients_meta_box->init();
+        $this->steps_meta_box->init();
     }
   
-    function register_plugin() {
+    function init_plugin() {
+        // Register post type
         $this->register_recipes_post_type();
+        
+        // Register styles
+        $pluginDir = plugins_url('/css/admin.css', __FILE__);
+        wp_register_style('toro_rm_admin_styles', $pluginDir);
+    }
+    
+    function enqueue_styles() {
+        wp_enqueue_style('toro_rm_admin_styles');
     }
     
     function register_recipes_post_type() {
@@ -83,15 +115,19 @@ class ToRo_Recipe_Manager {
 
     function add_submenu_for_ingredients(){
         add_submenu_page(self::INGREDIENTS_PARENT_SLUG, 
-                self::INGREDIENTS_PAGE_TITLE, 
-                self::INGREDIENTS_MENU_TITLE, 
-                self::INGREDIENTS_CAPABILITY, 
-                self::INGREDIENTS_MENU_SLUG, 
-                array($this, self::INGREDIENTS_FUNCTION));
+            self::INGREDIENTS_PAGE_TITLE, 
+            self::INGREDIENTS_MENU_TITLE, 
+            self::INGREDIENTS_CAPABILITY, 
+            self::INGREDIENTS_MENU_SLUG, 
+            array($this, self::INGREDIENTS_FUNCTION));
     }
 
-    function my_render_list_page() {
-        echo '<div class="wrap">TEST 123</div>';
+    function render_ingredients_list_table() {
+        $listTable = new ToRo_RM_Ingredients_List_Table();
+        echo '<div class="wrap"><h2>My List Table Test</h2>'; 
+        $listTable->prepare_items(); 
+        $listTable->display(); 
+        echo '</div>'; 
     }
     
 }

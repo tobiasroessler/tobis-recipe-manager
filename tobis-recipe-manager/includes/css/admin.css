@@ -1,0 +1,12 @@
+.toro_rm_recipe_label_div {
+    float: left;
+    min-width: 120px;
+}
+
+.toro_rm_label_general {
+    font-weight: bold;
+}
+
+.toro_rm_recipe_details_input {
+    margin-right: 5px;
+}
