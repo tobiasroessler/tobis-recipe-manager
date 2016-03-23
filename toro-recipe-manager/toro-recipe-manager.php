@@ -1,6 +1,6 @@
 <?php
 /*
-    Plugin Name: Tobi's Recipe Manager
+    Plugin Name: ToRo Recipe Manager
     Plugin URI: http://www.tobiasroessler.com
     Description: Plugin for managing recipes
     Author: Tobias Rössler
