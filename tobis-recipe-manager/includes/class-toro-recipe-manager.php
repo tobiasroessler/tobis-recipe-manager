@@ -57,7 +57,7 @@ class ToRo_Recipe_Manager {
         
         // Insert style scripts
         //add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
-        add_action('init', array($this, 'enqueue_styles'));
+        add_action('init', array($this, 'enqueue_styles_and_scripts'));
         
         // Add a submenu for managing the ingredients
         add_action('admin_menu', array($this, 'add_submenu_for_ingredients'));
@@ -78,10 +78,15 @@ class ToRo_Recipe_Manager {
         // Register styles
         $pluginDir = plugins_url('/css/admin.css', __FILE__);
         wp_register_style('toro_rm_admin_styles', $pluginDir);
+        
+        // Register JavaScript
+        $scriptDir = plugins_url('/js/admin.js', __FILE__);
+        wp_register_script('toro_rm_admin_scripts', $scriptDir);
     }
     
-    function enqueue_styles() {
+    function enqueue_styles_and_scripts() {
         wp_enqueue_style('toro_rm_admin_styles');
+        wp_enqueue_script('toro_rm_admin_scripts');
     }
     
     function register_recipes_post_type() {
@@ -108,6 +113,7 @@ class ToRo_Recipe_Manager {
             'menu_position' => self::RECIPE_POST_TYPE_MENU_POSITION,
             'has_archive' => true,
             'rewrite' => true,
+            'supports' => array('title','thumbnail'),
         );
         
         register_post_type(self::RECIPE_POST_TYPE_ID, $args);

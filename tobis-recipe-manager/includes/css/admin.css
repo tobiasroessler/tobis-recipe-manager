@@ -10,3 +10,21 @@
 .toro_rm_recipe_details_input {
     margin-right: 5px;
 }
+
+#add_ingredient_button {
+    margin-top: 10px;
+}
+
+.ingredient_buttons_separator {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.ingredient_wrapper:first-of-type .up_link {
+    visibility: hidden;
+    clear:both;
+}
+
+.ingredient_wrapper:last-of-type .down_link {
+    visibility: hidden;
+}
