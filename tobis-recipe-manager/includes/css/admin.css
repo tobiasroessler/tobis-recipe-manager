@@ -15,16 +15,34 @@
     margin-top: 10px;
 }
 
-.ingredient_buttons_separator {
+.ingredient_up_button_separator, .ingredient_down_button_separator {
     margin-left: 8px;
     margin-right: 8px;
 }
 
-.ingredient_wrapper:first-of-type .up_link {
-    visibility: hidden;
+.ingredient_wrapper:first-of-type .ingredient_up_link, .ingredient_wrapper:first-of-type .ingredient_up_button_separator {
+    display: none;
     clear:both;
 }
 
-.ingredient_wrapper:last-of-type .down_link {
-    visibility: hidden;
+.ingredient_wrapper:last-of-type .ingredient_down_link, .ingredient_wrapper:last-of-type .ingredient_down_button_separator {
+    display: none;
+}
+
+#add_step_button {
+    margin-top: 10px;
+}
+
+.step_up_button_separator, .step_down_button_separator {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.step_wrapper:first-of-type .step_up_link, .step_wrapper:first-of-type .step_up_button_separator {
+    display: none;
+    clear:both;
+}
+
+.step_wrapper:last-of-type .step_down_link, .step_wrapper:last-of-type .step_down_button_separator {
+    display: none;
 }

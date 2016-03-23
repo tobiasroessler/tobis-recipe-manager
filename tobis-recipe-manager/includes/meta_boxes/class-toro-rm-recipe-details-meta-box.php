@@ -42,9 +42,9 @@ class ToRo_RM_Recipe_Details_Meta_Box {
         }
         
         // Get data from $_POST
-        $new_amount = (isset($_POST['toro_rm_amount']) ? sanitize_html_class($_POST['toro_rm_amount']) : '');
-        $new_preparation_time = (isset($_POST['toro_rm_preparation_time']) ? sanitize_html_class($_POST['toro_rm_preparation_time']) : '');
-        $new_cooking_time = (isset($_POST['toro_rm_cooking_time']) ? sanitize_html_class($_POST['toro_rm_cooking_time']) : '');
+        $amount = (isset($_POST['toro_rm_amount']) ? sanitize_html_class($_POST['toro_rm_amount']) : '');
+        $preparation_time = (isset($_POST['toro_rm_preparation_time']) ? sanitize_html_class($_POST['toro_rm_preparation_time']) : '');
+        $cooking_time = (isset($_POST['toro_rm_cooking_time']) ? sanitize_html_class($_POST['toro_rm_cooking_time']) : '');
         
         // Get the meta value of the custom field key
         $meta_value = get_post_meta($post_id, self::META_KEY, true);
@@ -53,11 +53,12 @@ class ToRo_RM_Recipe_Details_Meta_Box {
         $dom = new DOMDocument('1.0', 'utf-8');
         $root = $dom->createElement('details');
         $dom->appendChild($root);
-        $root->appendChild($dom->createElement('amount', $new_amount));
-        $root->appendChild($dom->createElement('preparation_time', $new_preparation_time));
-        $root->appendChild($dom->createElement('cooking_time', $new_cooking_time));
+        $root->appendChild($dom->createElement('amount', $amount));
+        $root->appendChild($dom->createElement('preparation_time', $preparation_time));
+        $root->appendChild($dom->createElement('cooking_time', $cooking_time));
         $new_meta_value = $dom->saveXML();
         
+        // Add or update
         if ($meta_value == '') {
             add_post_meta($post_id, self::META_KEY, $new_meta_value, true);
         } else {
